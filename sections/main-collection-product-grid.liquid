@@ -275,6 +275,43 @@
               {% endif %}
             </ul>
 
+            <script>
+              document.addEventListener('DOMContentLoaded', function () {
+                const grid = document.getElementById('product-grid');
+                if (!grid) return;
+
+                function handleDuplicates() {
+                  const items = grid.querySelectorAll('[data-product-id]');
+                  const seen = new Set();
+
+                  items.forEach((item) => {
+                    const id = item.dataset.productId;
+
+                    if (!id) return;
+
+                    if (seen.has(id)) {
+                      item.style.display = 'none';
+                    } else {
+                      seen.add(id);
+                      item.style.display = '';
+                    }
+                  });
+                }
+
+                // Initial run
+                handleDuplicates();
+
+                // Infinite scroll support
+                const observer = new MutationObserver(() => {
+                  handleDuplicates();
+                });
+
+                observer.observe(grid, {
+                  childList: true,
+                });
+              });
+            </script>
+
             {%- if paginate.pages > 1 -%}
               {% render 'infinite-scroll', next_page: paginate.next.url, page_size: paginate.pages %}
             {%- endif -%}
