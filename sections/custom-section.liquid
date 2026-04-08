@@ -1,5 +1,11 @@
 <div class="container">
     <h1>{{section.settings.custom-heading }}</h1>
+
+    {% for product in collections['featured-products'].products %}
+        {% render 'card-product'
+        card_product: product,
+        %}
+    {% endfor %}
 </div>
 
 {% schema %}
